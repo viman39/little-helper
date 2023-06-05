@@ -1,94 +1,67 @@
 import { useState, useRef } from "react";
 
-function App() {
+function Fixed() {
   const [questions, setQuestions] = useState([]);
+  const [p, setP] = useState("");
   const inputRef = useRef();
 
-  const addQuestions = () => {
-    const questionsJSON = JSON.parse(inputRef.current.value);
-    const questionsParsed = questionsJSON.map(
-      ({ id, description, answers }) => ({
-        id,
-        description,
-        answers: answers.map(({ id, description }) => ({
-          id,
-          description,
-          isCorrect: null,
-        })),
-      })
-    );
-    console.log(questionsParsed);
-    setQuestions(questionsParsed);
-  };
+  const submitValue = () => {
+    try {
+      const parsed = JSON.parse(p);
+      let questions = [];
 
-  const addAnswers = () => {
-    const answersJSON = JSON.parse(inputRef.current.value);
-    const qs = [...questions];
-
-    answersJSON.questionExams.forEach((question) => {
-      question.question.answers.forEach((answer) => {
-        const questionIndex = qs.findIndex(
-          (el) => el.id == question.question.id
-        );
-        const answerIndex = qs[questionIndex].answers.findIndex(
-          (el) => el.id == answer.id
-        );
-        console.log(
-          question.question.id,
-          answer.id,
-          questionIndex,
-          answerIndex
-        );
-        if (answerIndex != 0 && questionIndex != 0) {
-          qs[questionIndex].answers[answerIndex].isCorrect = answer.isCorrect;
+      parsed.questionExams.forEach((question) => {
+        if (!questions.find((q) => q.id === question.id)) {
+          questions.push({
+            id: question.id,
+            description: question.question.description,
+            answers: question.answerExams.map(({ isChecked, answer }) => ({
+              id: answer.id,
+              description: answer.description,
+              isChecked,
+              isCorrect: answer.isCorrect,
+            })),
+          });
         }
       });
-    });
 
-    setQuestions((oldQuestions) => qs);
+      setQuestions(questions);
+    } catch (e) {
+      setQuestions(["nu ai copiat ce trebuie"]);
+    }
+    setP("");
   };
 
   return (
     <>
-      {questions.length === 0 && (
-        <>
-          <input type="text" ref={inputRef}></input>
-          <button onClick={addQuestions}>QUESTIONS</button>
-        </>
-      )}
-      {questions.length !== 0 && (
-        <>
-          <div style={{ margin: "25px" }}>
-            <input type="text" ref={inputRef}></input>
-            <button onClick={addAnswers}>ANSWERS</button>
-          </div>
-
-          <div style={{ margin: "25px" }}>
-            {questions.map(({ id, description, answers }) => (
-              <div key={id} style={{ marginTop: "13px" }}>
-                <div>{description}</div>
-                {answers.map(({ id, description, isCorrect }) => (
-                  <div
-                    key={id}
-                    style={{
-                      color:
-                        isCorrect != null
-                          ? isCorrect
-                            ? "green"
-                            : "red"
-                          : "grey",
-                    }}
-                  >
+      <input
+        type="text"
+        ref={inputRef}
+        value={p}
+        onChange={(e) => setP(e.target.value)}
+        placeholder="Ctrl+A Ctrl+C Ctrl+V"
+      ></input>
+      <button onClick={submitValue}>TEST</button>
+      {questions.length > 1
+        ? questions.map(({ id, description, answers }) => (
+            <p key={id}>
+              <div>{description}</div>
+              {answers.map(({ id, description, isChecked, isCorrect }) => {
+                const styles = { color: isCorrect ? "green" : "red" };
+                return (
+                  <div key={id} style={styles}>
+                    {isChecked && <b style={{ marginRight: "3px" }}>V</b>}
                     {description}
                   </div>
-                ))}
-              </div>
-            ))}
-          </div>
-        </>
-      )}
+                );
+              })}
+            </p>
+          ))
+        : questions[0]
+        ? questions[0]
+        : ""}
     </>
   );
 }
 
-export default App;
+export default Fixed;
