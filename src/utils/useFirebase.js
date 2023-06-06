@@ -9,7 +9,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { db } from "./utils";
+import { db } from "./firebase";
 
 export const useFetchCollection = (collectionName, queryOptions = {}) => {
   const [data, setData] = useState([]);
@@ -24,7 +24,7 @@ export const useFetchCollection = (collectionName, queryOptions = {}) => {
 
     const unsubscribe = onSnapshot(collectionRef, (snapshot) => {
       const fetchedData = snapshot.docs.map((doc) => ({
-        id: doc.id,
+        uid: doc.id,
         ...doc.data(),
       }));
       setData(fetchedData);

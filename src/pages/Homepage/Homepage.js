@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useFetchCollection } from "../../utils/useFirebase";
 
 const Homepage = () => {
@@ -10,7 +11,11 @@ const Homepage = () => {
         (exams.length === 0 ? (
           <div>No exams added yet</div>
         ) : (
-          <div>you have {exams.length} exams</div>
+          exams.map(({ uid, name, percentageFilled }) => (
+            <div key={uid}>
+              <Link to={`exam/${uid}`}>{`${name} (${percentageFilled}%)`}</Link>
+            </div>
+          ))
         ))}
     </>
   );
