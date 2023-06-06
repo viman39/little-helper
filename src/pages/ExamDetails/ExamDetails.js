@@ -12,21 +12,25 @@ const ExamDetails = () => {
         (exam ? (
           <>
             <div>{`${exam.name} - COMPLETAT ${exam.percentageFilled}%`}</div>
-            {exam.questions.map(({ id, description, answers }) => (
-              <div style={{ marginTop: "9px" }} key={id}>
-                <div>{description}</div>
-                {answers.map(({ description, isCorrect, id }) => {
-                  const color =
-                    isCorrect === null ? "grey" : isCorrect ? "green" : "red";
+            {exam.questions.map(
+              ({ id, description, answers, isCompleted }, index) => (
+                <div style={{ marginTop: "11px" }} key={id}>
+                  <div>{`${isCompleted ? "*" : ""} ${
+                    index + 1
+                  }. ${description}`}</div>
+                  {answers.map(({ description, isCorrect, id }) => {
+                    const color =
+                      isCorrect === null ? "grey" : isCorrect ? "green" : "red";
 
-                  return (
-                    <div style={{ color: color }} key={id}>
-                      {description}
-                    </div>
-                  );
-                })}
-              </div>
-            ))}
+                    return (
+                      <div style={{ color: color }} key={id}>
+                        -{description}
+                      </div>
+                    );
+                  })}
+                </div>
+              )
+            )}
           </>
         ) : (
           <div>Id-ul nu exista</div>
