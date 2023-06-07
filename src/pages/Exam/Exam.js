@@ -3,6 +3,9 @@ import { CustomError } from "../../utils/error";
 import { useAddDocument } from "../../utils/useFirebase";
 import useAuth from "../../utils/useAuth";
 import { useNavigate } from "react-router-dom";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import { examStyles } from "./exam.styles";
 
 const Exam = () => {
   const [idDiscipline, setIdDiscipline] = useState("");
@@ -54,36 +57,45 @@ const Exam = () => {
   };
 
   return (
-    <>
-      <input
-        type="text"
-        placeholder="ID Disciplina"
-        onChange={(e) => {
-          setIdDiscipline(e.target.value);
-          setError("");
-        }}
-      />
-      <input
-        type="text"
-        placeholder="Nume"
-        onChange={(e) => {
-          setName(e.target.value);
-          setError("");
-        }}
-      />
-      <textarea
-        type="text"
-        placeholder="Exam Object"
-        onChange={(e) => {
-          setExamObject(e.target.value);
-          setError("");
-        }}
-      />
-      <button onClick={addExamObject} disabled={loading}>
-        Add Exam
-      </button>
+    <div className={examStyles}>
+      <div>
+        <Input
+          type="text"
+          placeholder="ID Disciplina"
+          onChange={(e) => {
+            setIdDiscipline(e.target.value);
+            setError("");
+          }}
+          style={{ marginRight: "4px" }}
+        />
+        <Input
+          type="text"
+          placeholder="Nume"
+          onChange={(e) => {
+            setName(e.target.value);
+            setError("");
+          }}
+        />
+      </div>
+      <div style={{ marginTop: "11px" }}>
+        <textarea
+          type="text"
+          placeholder="Exam Object"
+          onChange={(e) => {
+            setExamObject(e.target.value);
+            setError("");
+          }}
+        />
+      </div>
+      <div style={{ marginTop: "11px" }}>
+        <Button
+          onClick={addExamObject}
+          disabled={loading}
+          title="Adauga Exam"
+        />
+      </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
-    </>
+    </div>
   );
 };
 

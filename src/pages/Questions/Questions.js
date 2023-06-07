@@ -3,6 +3,8 @@ import { CustomError } from "../../utils/error";
 import useAuth from "../../utils/useAuth";
 import { Link } from "react-router-dom";
 import { getExam, getExamQuestions, updateExam } from "./questions.utils";
+import Button from "../../components/Button";
+import { questionsStyles } from "./questions.styles";
 
 const Questions = () => {
   const [questions, setQuestions] = useState([]);
@@ -43,18 +45,22 @@ const Questions = () => {
   };
 
   return (
-    <>
-      <textarea
-        type="text"
-        value={examResult}
-        onChange={(e) => {
-          setExamResult(e.target.value);
-          setError("");
-          setQuestions([]);
-        }}
-        placeholder="Ctrl+A Ctrl+C Ctrl+V"
-      />
-      <button onClick={submitExam}>VEZI REZULTATE</button>
+    <div className={questionsStyles}>
+      <div>
+        <textarea
+          type="text"
+          value={examResult}
+          onChange={(e) => {
+            setExamResult(e.target.value);
+            setError("");
+            setQuestions([]);
+          }}
+          placeholder="Ctrl+A Ctrl+C Ctrl+V"
+        />
+      </div>
+      <div>
+        <Button onClick={submitExam} title="VEZI REZULTATE" />
+      </div>
       {examMessage && (
         <div style={{ marginTop: "11px", marginBottom: "11px" }}>
           {examMessage}
@@ -64,25 +70,27 @@ const Questions = () => {
       {error && (
         <div style={{ marginTop: "11px", marginBottom: "11px" }}>{error}</div>
       )}
-      {!error && questions.length > 0 && (
-        <>
-          {questions.map(({ id, description, answers }) => (
-            <div key={id}>
-              <div>{description}</div>
-              {answers.map(({ id, description, isChecked, isCorrect }) => {
-                const styles = { color: isCorrect ? "green" : "red" };
-                return (
-                  <div key={id} style={styles}>
-                    {isChecked && <b style={{ marginRight: "3px" }}>V</b>}
-                    {description}
-                  </div>
-                );
-              })}
-            </div>
-          ))}
-        </>
-      )}
-    </>
+      <div>
+        {!error && questions.length > 0 && (
+          <>
+            {questions.map(({ id, description, answers }) => (
+              <div key={id}>
+                <div>{description}</div>
+                {answers.map(({ id, description, isChecked, isCorrect }) => {
+                  const styles = { color: isCorrect ? "green" : "red" };
+                  return (
+                    <div key={id} style={styles}>
+                      {isChecked && <b style={{ marginRight: "3px" }}>V</b>}
+                      {description}
+                    </div>
+                  );
+                })}
+              </div>
+            ))}
+          </>
+        )}
+      </div>
+    </div>
   );
 };
 

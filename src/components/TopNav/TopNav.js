@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom";
+import { navBarStyles } from "./topNav.styles";
 
 const TopNav = () => {
   return (
-    <nav>
+    <nav className={navBarStyles}>
       <ul>
         <li>
           <Link to="/">Homepage</Link>

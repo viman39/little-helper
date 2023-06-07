@@ -24,7 +24,7 @@ const ExamDetails = () => {
 
                     return (
                       <div style={{ color: color }} key={id}>
-                        -{description}
+                        - {description}
                       </div>
                     );
                   })}

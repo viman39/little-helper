@@ -4,6 +4,7 @@ import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 const useAuth = () => {
   const [user, setUser] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -17,11 +18,11 @@ const useAuth = () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
     } catch (error) {
-      console.log("Login error:", error);
+      setError(error.message);
     }
   };
 
-  return { user, login };
+  return { user, error, setError, login };
 };
 
 export default useAuth;
