@@ -41,7 +41,7 @@ const Exam = () => {
             id,
             description,
             isCorrect: null,
-            lastUpdated: "",
+            lastUpdated: [],
           })),
         })),
         addedBy: user?.uid,

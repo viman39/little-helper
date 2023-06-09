@@ -3,6 +3,7 @@ import { css } from "@emotion/css";
 export const navBarStyles = css`
   padding-top: 10px;
   padding-bottom: 10px;
+  margin-bottom: 4vh;
   ul {
     list-style: none;
     display: flex;

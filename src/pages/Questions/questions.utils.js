@@ -8,6 +8,14 @@ import {
 } from "firebase/firestore";
 import { db } from "../../utils/firebase";
 
+const getLastUpdated = (oldValues, value) => {
+  if (typeof oldValues === "string") {
+    return [oldValues];
+  } else {
+    return oldValues.unshift(value);
+  }
+};
+
 export const getExam = async (examId) => {
   const collectionRef = query(
     collection(db, "exams"),
@@ -64,7 +72,11 @@ export const updateExam = async (questions, exam, userEmail) => {
         ].isCorrect = isCorrect;
         exam.data.questions[examQuestionIndex].answers[
           examAnswerIndex
-        ].lastUpdated = `${userEmail}: ${new Date().toString()}`;
+        ].lastUpdated = getLastUpdated(
+          exam.data.questions[examQuestionIndex].answers[examAnswerIndex]
+            .lastUpdated,
+          `${userEmail} - EXAM: ${new Date().toString()}`
+        );
       }
     });
 
@@ -83,7 +95,10 @@ export const updateExam = async (questions, exam, userEmail) => {
         examAnswers.forEach((answer) => {
           if (answer.isCorrect === null) {
             answer.isCorrect = false;
-            answer.lastUpdated = `${userEmail} - FILLED: ${new Date().toString()}`;
+            answer.lastUpdated = getLastUpdated(
+              answer.lastUpdated,
+              `${userEmail} - FILLED: ${new Date().toString()}`
+            );
           }
         });
         exam.data.questions[examQuestionIndex].isCompleted = true;
@@ -91,7 +106,10 @@ export const updateExam = async (questions, exam, userEmail) => {
         examAnswers.forEach((answer) => {
           if (answer.isCorrect === null) {
             answer.isCorrect = true;
-            answer.lastUpdated = `${userEmail} - FILLED: ${new Date().toString()}`;
+            answer.lastUpdated = getLastUpdated(
+              answer.lastUpdated,
+              `${userEmail} - FILLED: ${new Date().toString()}`
+            );
           }
         });
         exam.data.questions[examQuestionIndex].isCompleted = true;
