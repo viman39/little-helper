@@ -44,7 +44,7 @@ const Answer = ({
         )}
       </span>
       <span onClick={() => setShowNotes((oldShowNotes) => !oldShowNotes)}>
-        {description}
+        {description} {notes && notes.length > 0 && <span>&#128712;</span>}
       </span>
       {(showNotes || showAllNotes) && notes && (
         <>

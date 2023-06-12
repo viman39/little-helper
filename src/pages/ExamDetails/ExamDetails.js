@@ -35,7 +35,7 @@ const ExamDetails = () => {
                 style={{ width: "15vw" }}
               />
               <Button
-                title={showAllNotes ? "Ascunde Notes" : "Vezi Notes"}
+                title={showAllNotes ? "Ascunde Notite" : "Vezi Notite"}
                 onClick={() => setShowAllNotes((old) => !old)}
               />
             </div>

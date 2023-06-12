@@ -3,7 +3,6 @@ import { css } from "@emotion/css";
 export const styles = css`
   position: relative;
   display: inline-block;
-  cursor: pointer;
 `;
 
 export const tooltipStyles = css`
