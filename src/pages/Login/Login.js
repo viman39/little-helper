@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import useAuth from "../../utils/useAuth";
-import Button from "../Button";
-import Input from "../Input";
+import Button from "../../components/Button";
+import Input from "../../components/Input";
 import { loginStyles } from "./login.styles";
+import { AuthContext } from "../../context/AuthContextProvider";
 
 const Login = () => {
-  const { user, error, setError, login } = useAuth();
+  const { error, setError, login } = useAuth();
+  const { user } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 

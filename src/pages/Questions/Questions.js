@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { CustomError } from "../../utils/error";
-import useAuth from "../../utils/useAuth";
 import { Link } from "react-router-dom";
 import { getExam, getExamQuestions, updateExam } from "./questions.utils";
 import Button from "../../components/Button";
 import { questionsStyles } from "./questions.styles";
+import { AuthContext } from "../../context/AuthContextProvider";
 
 const Questions = () => {
   const [questions, setQuestions] = useState([]);
@@ -12,7 +12,7 @@ const Questions = () => {
   const [examResult, setExamResult] = useState("");
   const [examMessage, setExamMessage] = useState("");
   const [examId, setExamId] = useState(0);
-  const { user } = useAuth();
+  const { user } = useContext(AuthContext);
 
   const submitExam = async () => {
     try {

@@ -2,8 +2,7 @@ import { useState } from "react";
 import Tooltip from "../../components/Tooltip/Tooltip";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import useAuth from "../../utils/useAuth";
-import { noteText } from "./answer.styles";
+import { infoIcon, noteText } from "./answer.styles";
 
 const Answer = ({
   description,
@@ -16,15 +15,15 @@ const Answer = ({
   indexQuestion,
   exam,
   showAllNotes,
+  userEmail,
 }) => {
   const [showNotes, setShowNotes] = useState(showNotesDefault);
   const [note, setNote] = useState("");
   const color = isCorrect === null ? "grey" : isCorrect ? "green" : "red";
-  const { user } = useAuth();
 
   const onClickHandler = () => {
     if (note === "") return;
-    const newValue = `${user.email}: ${note}`;
+    const newValue = `${userEmail}: ${note}`;
     const notes = exam.questions[indexQuestion].answers[indexAnswer]?.notes;
     exam.questions[indexQuestion].answers[indexAnswer].notes =
       notes === undefined ? [newValue] : [newValue, ...notes];
@@ -34,17 +33,20 @@ const Answer = ({
 
   return (
     <div style={{ color: color }}>
-      <span style={{ marginRight: "3px" }}>
+      <span>
         {lastUpdated.length > 0 ? (
           <Tooltip text={lastUpdated.toString()}>
-            <>- </>
+            <>-</>
           </Tooltip>
         ) : (
-          <>- </>
+          <>-</>
         )}
       </span>
       <span onClick={() => setShowNotes((oldShowNotes) => !oldShowNotes)}>
-        {description} {notes && notes.length > 0 && <span>&#128712;</span>}
+        {description}{" "}
+        {notes && notes.length > 0 && (
+          <span className={infoIcon}>&#128712;</span>
+        )}
       </span>
       {(showNotes || showAllNotes) && notes && (
         <>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useFetchDocument } from "../../utils/useFirebase";
 import Input from "../../components/Input";
@@ -6,12 +6,14 @@ import { floatTopRight } from "./examDetails.styles";
 import { filteredExamQuestions, getUpdater } from "./examDetails.utils";
 import Answer from "./Answer";
 import Button from "../../components/Button";
+import { AuthContext } from "../../context/AuthContextProvider";
 
 const ExamDetails = () => {
   const { examId } = useParams();
   const { document: exam, loading } = useFetchDocument("exams", examId);
   const [search, setSearch] = useState("");
   const [showAllNotes, setShowAllNotes] = useState(false);
+  const { user } = useContext(AuthContext);
 
   const examUpdater = getUpdater(examId);
   const examQuestions = loading
@@ -41,10 +43,10 @@ const ExamDetails = () => {
             </div>
             {examQuestions.map(
               ({ id, description, answers, isCompleted }, index) => (
-                <div style={{ marginTop: "11px" }} key={id}>
-                  <div>{`${isCompleted ? "*" : ""} ${
-                    index + 1
-                  }. ${description}`}</div>
+                <div style={{ marginTop: "19px" }} key={id}>
+                  <div style={{ marginBottom: "7px" }}>{`${
+                    isCompleted ? "*" : ""
+                  } ${index + 1}. ${description}`}</div>
                   {answers.map(
                     (
                       { description, isCorrect, id, lastUpdated, notes },
@@ -63,6 +65,7 @@ const ExamDetails = () => {
                           notes={notes}
                           examUpdater={examUpdater}
                           showAllNotes={showAllNotes}
+                          userEmail={user.email}
                         />
                       );
                     }

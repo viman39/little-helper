@@ -3,19 +3,20 @@ import Questions from "./pages/Questions/Questions";
 import Exam from "./pages/Exam/Exam";
 import ExamDetails from "./pages/ExamDetails/ExamDetails";
 import Homepage from "./pages/Homepage/Homepage";
-import Login from "./components/Login/Login";
-import useAuth from "./utils/useAuth";
+import Login from "./pages/Login/Login";
 import TopNav from "./components/TopNav/TopNav";
+import { AuthContext } from "./context/AuthContextProvider";
+import { useContext } from "react";
 
 const App = () => {
-  const { user } = useAuth();
+  const { user } = useContext(AuthContext);
 
   return (
-    <div>
-      <Login />
+    <>
+      {!user && <Login />}
       {user && (
         <>
-          <TopNav />
+          <TopNav userEmail={user.email} />
           <Routes>
             <Route path="/" element={<Homepage />} />
             <Route path="exam/:examId" element={<ExamDetails />} />
@@ -24,7 +25,7 @@ const App = () => {
           </Routes>
         </>
       )}
-    </div>
+    </>
   );
 };
 

@@ -1,18 +1,18 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { CustomError } from "../../utils/error";
 import { useAddDocument } from "../../utils/useFirebase";
-import useAuth from "../../utils/useAuth";
 import { useNavigate } from "react-router-dom";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { examStyles } from "./exam.styles";
+import { AuthContext } from "../../context/AuthContextProvider";
 
 const Exam = () => {
   const [idDiscipline, setIdDiscipline] = useState("");
   const [name, setName] = useState("");
   const [examObject, setExamObject] = useState("");
   const [error, setError] = useState("");
-  const { user } = useAuth();
+  const { user } = useContext(AuthContext);
   const { addDocument, setLoading, loading } = useAddDocument("exams");
   const navigate = useNavigate();
 
