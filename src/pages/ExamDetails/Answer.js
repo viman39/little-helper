@@ -2,7 +2,12 @@ import { useState } from "react";
 import Tooltip from "../../components/Tooltip/Tooltip";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { infoIcon, noteText } from "./answer.styles";
+import {
+  infoIcon,
+  noteDeleteButton,
+  noteEditButton,
+  noteText,
+} from "./answer.styles";
 
 const Answer = ({
   description,
@@ -10,25 +15,30 @@ const Answer = ({
   lastUpdated,
   notes,
   showNotesDefault,
-  examUpdater,
-  indexAnswer,
-  indexQuestion,
-  exam,
   showAllNotes,
+  indexQuestion,
+  indexAnswer,
+  examUpdater,
   userEmail,
 }) => {
   const [showNotes, setShowNotes] = useState(showNotesDefault);
+  const [noteToEditIndex, setNoteToEditIndex] = useState(null);
   const [note, setNote] = useState("");
   const color = isCorrect === null ? "grey" : isCorrect ? "green" : "red";
 
-  const onClickHandler = () => {
+  const updateNotesHandler = () => {
     if (note === "") return;
+
     const newValue = `${userEmail}: ${note}`;
-    const notes = exam.questions[indexQuestion].answers[indexAnswer]?.notes;
-    exam.questions[indexQuestion].answers[indexAnswer].notes =
-      notes === undefined ? [newValue] : [newValue, ...notes];
-    examUpdater(exam);
+    const action = noteToEditIndex !== null ? "UPDATE" : "CREATE";
+
+    examUpdater(action, indexQuestion, indexAnswer, newValue, noteToEditIndex);
     setNote("");
+    setNoteToEditIndex(null);
+  };
+
+  const deleteNoteHandler = (index) => {
+    examUpdater("DELETE", indexQuestion, indexAnswer, "", index);
   };
 
   return (
@@ -43,7 +53,7 @@ const Answer = ({
         )}
       </span>
       <span onClick={() => setShowNotes((oldShowNotes) => !oldShowNotes)}>
-        {description}{" "}
+        {description}
         {notes && notes.length > 0 && (
           <span className={infoIcon}>&#128712;</span>
         )}
@@ -53,6 +63,38 @@ const Answer = ({
           {notes.map((note, index) => (
             <div key={index} className={noteText}>
               {note}
+              {note.includes(userEmail) && (
+                <>
+                  {noteToEditIndex === null && (
+                    <span
+                      className={noteEditButton}
+                      onClick={() => {
+                        setNoteToEditIndex(index);
+                        setNote(note.split(" ")[1]);
+                      }}
+                    >
+                      (edit)
+                    </span>
+                  )}
+                  {noteToEditIndex !== null && (
+                    <span
+                      className={noteEditButton}
+                      onClick={() => {
+                        setNoteToEditIndex(null);
+                        setNote("");
+                      }}
+                    >
+                      (cancel)
+                    </span>
+                  )}
+                  <span
+                    className={noteDeleteButton}
+                    onClick={() => deleteNoteHandler(index)}
+                  >
+                    (delete)
+                  </span>
+                </>
+              )}
             </div>
           ))}
         </>
@@ -66,7 +108,10 @@ const Answer = ({
             onChange={(e) => setNote(e.target.value)}
             value={note}
           />
-          <Button title="Adauga" onClick={onClickHandler} />
+          <Button
+            title={noteToEditIndex === null ? "Adauga" : "Update"}
+            onClick={updateNotesHandler}
+          />
         </div>
       )}
     </div>

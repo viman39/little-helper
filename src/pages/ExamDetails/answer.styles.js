@@ -10,8 +10,14 @@ export const infoIcon = css`
   color: black;
 `;
 
-export const editNoteButton = css`
-  margin-left: 7px;
+export const noteEditButton = css`
+  margin-left: 9px;
+  cursor: pointer;
+  text-decoration: underline;
+`;
+
+export const noteDeleteButton = css`
+  margin-left: 3px;
   cursor: pointer;
   text-decoration: underline;
 `;

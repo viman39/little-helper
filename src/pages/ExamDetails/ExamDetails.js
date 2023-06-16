@@ -13,9 +13,15 @@ const ExamDetails = () => {
   const { document: exam, loading } = useFetchDocument("exams", examId);
   const [search, setSearch] = useState("");
   const [showAllNotes, setShowAllNotes] = useState(false);
+  const [fontSize, setFontSize] = useState(16);
   const { user } = useContext(AuthContext);
 
-  const examUpdater = getUpdater(examId);
+  const examUpdater = loading
+    ? (...args) => {
+        console.log(args);
+      }
+    : getUpdater(examId, exam.questions);
+
   const examQuestions = loading
     ? []
     : filteredExamQuestions(exam.questions, search);
@@ -25,7 +31,7 @@ const ExamDetails = () => {
       {loading && <div>loading exam {examId}</div>}
       {!loading &&
         (exam ? (
-          <>
+          <div style={{ marginLeft: "7px" }}>
             <div>{`${exam.name} - COMPLETAT ${exam.percentageFilled}%`}</div>
             <div className={floatTopRight}>
               <Input
@@ -39,41 +45,55 @@ const ExamDetails = () => {
               <Button
                 title={showAllNotes ? "Ascunde Notite" : "Vezi Notite"}
                 onClick={() => setShowAllNotes((old) => !old)}
+                style={{ marginLeft: "3px" }}
+              />
+              <Button
+                title="-"
+                onClick={() =>
+                  setFontSize((oldFontSize) =>
+                    oldFontSize <= 16 ? 16 : oldFontSize - 4
+                  )
+                }
+                style={{ marginLeft: "3px" }}
+              />
+              <Button
+                title="+"
+                onClick={() => setFontSize((oldFontSize) => oldFontSize + 4)}
               />
             </div>
-            {examQuestions.map(
-              ({ id, description, answers, isCompleted }, index) => (
-                <div style={{ marginTop: "19px" }} key={id}>
-                  <div style={{ marginBottom: "7px" }}>{`${
-                    isCompleted ? "*" : ""
-                  } ${index + 1}. ${description}`}</div>
-                  {answers.map(
-                    (
-                      { description, isCorrect, id, lastUpdated, notes },
-                      indexAnswer
-                    ) => {
-                      return (
-                        <Answer
-                          description={description}
-                          lastUpdated={lastUpdated}
-                          isCorrect={isCorrect}
-                          key={id}
-                          indexAnswer={indexAnswer}
-                          indexQuestion={index}
-                          exam={exam}
-                          showNotesDefault={false}
-                          notes={notes}
-                          examUpdater={examUpdater}
-                          showAllNotes={showAllNotes}
-                          userEmail={user.email}
-                        />
-                      );
-                    }
-                  )}
-                </div>
-              )
-            )}
-          </>
+            {examQuestions.map(({ id, description, answers }, index) => (
+              <div
+                style={{ marginTop: "19px", fontSize: `${fontSize}px` }}
+                key={id}
+              >
+                <div style={{ marginBottom: "7px" }}>{`${
+                  index + 1
+                }. ${description}`}</div>
+                {answers.map(
+                  (
+                    { description, isCorrect, id, lastUpdated, notes },
+                    indexAnswer
+                  ) => {
+                    return (
+                      <Answer
+                        description={description}
+                        lastUpdated={lastUpdated}
+                        isCorrect={isCorrect}
+                        notes={notes}
+                        showNotesDefault={false}
+                        showAllNotes={showAllNotes}
+                        indexAnswer={indexAnswer}
+                        indexQuestion={index}
+                        examUpdater={examUpdater}
+                        userEmail={user.email}
+                        key={id}
+                      />
+                    );
+                  }
+                )}
+              </div>
+            ))}
+          </div>
         ) : (
           <div>Id-ul nu exista</div>
         ))}

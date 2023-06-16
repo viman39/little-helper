@@ -12,10 +12,24 @@ export const filteredExamQuestions = (examQuestions, search) =>
       })
     : examQuestions;
 
-export const getUpdater = (examUid) => {
-  return async (examData) => {
+export const getUpdater = (examUid, questions) => {
+  return async (action, indexQuestion, indexAnswer, note, indexNote) => {
+    if (action === "CREATE") {
+      questions[indexQuestion].answers[indexAnswer].notes.push(note);
+    }
+
+    if (action === "UPDATE") {
+      questions[indexQuestion].answers[indexAnswer].notes[indexNote] = note;
+    }
+
+    if (action === "DELETE") {
+      questions[indexQuestion].answers[indexAnswer].notes = questions[
+        indexQuestion
+      ].answers[indexAnswer].notes.filter((note, index) => indexNote !== index);
+    }
+
     try {
-      await updateDoc(doc(db, "exams", examUid), examData);
+      await updateDoc(doc(db, "exams", examUid), { questions: questions });
     } catch (e) {
       console.log(e);
     }
