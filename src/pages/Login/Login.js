@@ -36,7 +36,7 @@ const Login = () => {
               if (e.key === "Enter") login(email, password);
             }}
           />
-          <Button onClick={() => login(email, password)} title="Login" />
+          <Button onClick={() => login(email, password)}>Login</Button>
         </div>
       )}
     </>

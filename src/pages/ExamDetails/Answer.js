@@ -108,10 +108,9 @@ const Answer = ({
             onChange={(e) => setNote(e.target.value)}
             value={note}
           />
-          <Button
-            title={noteToEditIndex === null ? "Adauga" : "Update"}
-            onClick={updateNotesHandler}
-          />
+          <Button onClick={updateNotesHandler}>
+            {noteToEditIndex === null ? "Adauga" : "Update"}
+          </Button>
         </div>
       )}
     </div>

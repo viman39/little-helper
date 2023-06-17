@@ -9,7 +9,7 @@ const Button = (props) => {
     box-sizing: border-box;
     cursor: pointer;
     display: inline-block;
-    font-size: 13px;
+    font-size: ${props.fontSize ? props.fontSize : "13px"};
     line-height: 29px;
     padding: 0 10px 0 11px;
     position: relative;
@@ -22,8 +22,8 @@ const Button = (props) => {
   `;
 
   return (
-    <button className={buttonStyles} {...props}>
-      {props.title}
+    <button className={`${buttonStyles} `} {...props}>
+      {props.children}
     </button>
   );
 };

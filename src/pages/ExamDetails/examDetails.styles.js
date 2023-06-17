@@ -5,3 +5,8 @@ export const floatTopRight = css`
   top: 11px;
   right: 11px;
 `;
+
+export const testYourself = css`
+  text-decoration: none;
+  color: black;
+`;

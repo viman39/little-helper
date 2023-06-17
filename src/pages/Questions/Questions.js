@@ -59,7 +59,7 @@ const Questions = () => {
         />
       </div>
       <div>
-        <Button onClick={submitExam} title="VEZI REZULTATE" />
+        <Button onClick={submitExam}>VEZI REZULTATE</Button>
       </div>
       {examMessage && (
         <div style={{ marginTop: "11px", marginBottom: "11px" }}>

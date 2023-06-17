@@ -1,16 +1,16 @@
 import { useContext, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useFetchDocument } from "../../utils/useFirebase";
 import Input from "../../components/Input";
-import { floatTopRight } from "./examDetails.styles";
+import { floatTopRight, testYourself } from "./examDetails.styles";
 import { filteredExamQuestions, getUpdater } from "./examDetails.utils";
 import Answer from "./Answer";
 import Button from "../../components/Button";
 import { AuthContext } from "../../context/AuthContextProvider";
 
 const ExamDetails = () => {
-  const { examId } = useParams();
-  const { document: exam, loading } = useFetchDocument("exams", examId);
+  const { examUid } = useParams();
+  const { document: exam, loading } = useFetchDocument("exams", examUid);
   const [search, setSearch] = useState("");
   const [showAllNotes, setShowAllNotes] = useState(false);
   const [fontSize, setFontSize] = useState(16);
@@ -20,7 +20,7 @@ const ExamDetails = () => {
     ? (...args) => {
         console.log(args);
       }
-    : getUpdater(examId, exam.questions);
+    : getUpdater(examUid, exam.questions);
 
   const examQuestions = loading
     ? []
@@ -28,11 +28,18 @@ const ExamDetails = () => {
 
   return (
     <>
-      {loading && <div>loading exam {examId}</div>}
+      {loading && <div>loading exam {examUid}</div>}
       {!loading &&
         (exam ? (
           <div style={{ marginLeft: "7px" }}>
-            <div>{`${exam.name} - COMPLETAT ${exam.percentageFilled}%`}</div>
+            <div>
+              {`${exam.name} - COMPLETAT ${exam.percentageFilled}%`}{" "}
+              <Button>
+                <Link to={`/testyourself/${examUid}`} className={testYourself}>
+                  TESTEAZA-TE !
+                </Link>
+              </Button>
+            </div>
             <div className={floatTopRight}>
               <Input
                 type="text"
@@ -43,23 +50,26 @@ const ExamDetails = () => {
                 style={{ width: "15vw" }}
               />
               <Button
-                title={showAllNotes ? "Ascunde Notite" : "Vezi Notite"}
                 onClick={() => setShowAllNotes((old) => !old)}
                 style={{ marginLeft: "3px" }}
-              />
+              >
+                {showAllNotes ? "Ascunde Notite" : "Vezi Notite"}
+              </Button>
               <Button
-                title="-"
                 onClick={() =>
                   setFontSize((oldFontSize) =>
                     oldFontSize <= 16 ? 16 : oldFontSize - 4
                   )
                 }
                 style={{ marginLeft: "3px" }}
-              />
+              >
+                -
+              </Button>
               <Button
-                title="+"
                 onClick={() => setFontSize((oldFontSize) => oldFontSize + 4)}
-              />
+              >
+                +
+              </Button>
             </div>
             {examQuestions.map(({ id, description, answers }, index) => (
               <div

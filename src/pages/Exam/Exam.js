@@ -88,11 +88,9 @@ const Exam = () => {
         />
       </div>
       <div style={{ marginTop: "11px" }}>
-        <Button
-          onClick={addExamObject}
-          disabled={loading}
-          title="Adauga Exam"
-        />
+        <Button onClick={addExamObject} disabled={loading}>
+          Adauga Exam
+        </Button>
       </div>
       {error && <p style={{ color: "red" }}>{error}</p>}
     </div>

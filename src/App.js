@@ -7,6 +7,7 @@ import Login from "./pages/Login/Login";
 import TopNav from "./components/TopNav/TopNav";
 import { AuthContext } from "./context/AuthContextProvider";
 import { useContext } from "react";
+import TestYourself from "./pages/TestYourself/TestYourself";
 
 const App = () => {
   const { user } = useContext(AuthContext);
@@ -19,9 +20,10 @@ const App = () => {
           <TopNav userEmail={user.email} />
           <Routes>
             <Route path="/" element={<Homepage />} />
-            <Route path="exam/:examId" element={<ExamDetails />} />
+            <Route path="exam/:examUid" element={<ExamDetails />} />
             <Route path="exam" element={<Exam />} />
             <Route path="questions" element={<Questions />} />
+            <Route path="testyourself/:examUid" element={<TestYourself />} />
           </Routes>
         </>
       )}
