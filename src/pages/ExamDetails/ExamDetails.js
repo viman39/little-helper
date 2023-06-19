@@ -71,38 +71,46 @@ const ExamDetails = () => {
                 +
               </Button>
             </div>
-            {examQuestions.map(({ id, description, answers }, index) => (
-              <div
-                style={{ marginTop: "19px", fontSize: `${fontSize}px` }}
-                key={id}
-              >
-                <div style={{ marginBottom: "7px" }}>{`${
-                  index + 1
-                }. ${description}`}</div>
-                {answers.map(
-                  (
-                    { description, isCorrect, id, lastUpdated, notes },
-                    indexAnswer
-                  ) => {
-                    return (
-                      <Answer
-                        description={description}
-                        lastUpdated={lastUpdated}
-                        isCorrect={isCorrect}
-                        notes={notes}
-                        showNotesDefault={false}
-                        showAllNotes={showAllNotes}
-                        indexAnswer={indexAnswer}
-                        indexQuestion={index}
-                        examUpdater={examUpdater}
-                        userEmail={user.email}
-                        key={id}
-                      />
-                    );
-                  }
-                )}
-              </div>
-            ))}
+            {examQuestions.map(
+              ({ id: idQuestion, description, answers }, index) => (
+                <div
+                  style={{ marginTop: "19px", fontSize: `${fontSize}px` }}
+                  key={idQuestion}
+                >
+                  <div style={{ marginBottom: "7px" }}>{`${
+                    index + 1
+                  }. ${description}`}</div>
+                  {answers.map(
+                    (
+                      {
+                        description,
+                        isCorrect,
+                        id: idAnswer,
+                        lastUpdated,
+                        notes,
+                      },
+                      indexAnswer
+                    ) => {
+                      return (
+                        <Answer
+                          description={description}
+                          lastUpdated={lastUpdated}
+                          isCorrect={isCorrect}
+                          notes={notes}
+                          showNotesDefault={false}
+                          showAllNotes={showAllNotes}
+                          indexAnswer={indexAnswer}
+                          idQuestion={idQuestion}
+                          examUpdater={examUpdater}
+                          userEmail={user.email}
+                          key={idAnswer}
+                        />
+                      );
+                    }
+                  )}
+                </div>
+              )
+            )}
           </div>
         ) : (
           <div>Id-ul nu exista</div>

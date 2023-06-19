@@ -13,7 +13,9 @@ export const filteredExamQuestions = (examQuestions, search) =>
     : examQuestions;
 
 export const getUpdater = (examUid, questions) => {
-  return async (action, indexQuestion, indexAnswer, note, indexNote) => {
+  return async (action, idQuestion, indexAnswer, note, indexNote) => {
+    const indexQuestion = questions.findIndex((el) => el.id === idQuestion);
+
     if (action === "CREATE") {
       questions[indexQuestion].answers[indexAnswer].notes =
         questions[indexQuestion].answers[indexAnswer].notes !== undefined

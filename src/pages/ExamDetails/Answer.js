@@ -16,7 +16,7 @@ const Answer = ({
   notes,
   showNotesDefault,
   showAllNotes,
-  indexQuestion,
+  idQuestion,
   indexAnswer,
   examUpdater,
   userEmail,
@@ -32,13 +32,13 @@ const Answer = ({
     const newValue = `${userEmail}: ${note}`;
     const action = noteToEditIndex !== null ? "UPDATE" : "CREATE";
 
-    examUpdater(action, indexQuestion, indexAnswer, newValue, noteToEditIndex);
+    examUpdater(action, idQuestion, indexAnswer, newValue, noteToEditIndex);
     setNote("");
     setNoteToEditIndex(null);
   };
 
   const deleteNoteHandler = (index) => {
-    examUpdater("DELETE", indexQuestion, indexAnswer, "", index);
+    examUpdater("DELETE", idQuestion, indexAnswer, "", index);
   };
 
   return (
