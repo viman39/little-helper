@@ -6,6 +6,7 @@ import {
   questionsView,
   questionsFooter,
 } from "./testYourself.styles";
+import AnsweredQuestion from "./AnsweredQuestion";
 
 const Questions = ({ randomQuestion, questionsCount }) => {
   const [question, setQuestion] = useState(randomQuestion.next().value);
@@ -14,6 +15,8 @@ const Questions = ({ randomQuestion, questionsCount }) => {
   const [questionsCounter, setQuestionsCounter] = useState(1);
   const [correctAnswered, setCorrectAnswered] = useState(0);
   const [totalAnswered, setTotalAnswered] = useState(0);
+  const [answeredQuestions, setAnsweredQuestions] = useState([]);
+  const [showAnsweredQuestions, setShowAnsweredQuestions] = useState(false);
 
   const percentageCorrect =
     correctAnswered === 0
@@ -48,6 +51,11 @@ const Questions = ({ randomQuestion, questionsCount }) => {
       (oldCorrectAnswered) => oldCorrectAnswered + currentCorrectAnswered
     );
     setTotalAnswered((oldTotalAnswered) => oldTotalAnswered + answers.length);
+
+    setAnsweredQuestions((oldAnsweredQuestions) => [
+      ...oldAnsweredQuestions,
+      { ...question, answers: answers },
+    ]);
 
     const nextQuestion = randomQuestion.next().value;
     setQuestion(nextQuestion);
@@ -110,11 +118,23 @@ const Questions = ({ randomQuestion, questionsCount }) => {
             Next
           </Button>
         )}
+        <Button onClick={() => setShowAnsweredQuestions((old) => !old)}>
+          {showAnsweredQuestions
+            ? "Ascunde intrebari raspunse"
+            : "Vezi intrebari raspunse"}
+        </Button>
         <span>{`${questionsCounter}/${questionsCount}`}</span>
         <span
           style={{ color: percentageColor, fontWeight: "bold" }}
         >{`${percentageCorrect}%`}</span>
       </div>
+      {showAnsweredQuestions && (
+        <div>
+          {answeredQuestions.map((question, index) => (
+            <AnsweredQuestion question={question} index={index} key={index} />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

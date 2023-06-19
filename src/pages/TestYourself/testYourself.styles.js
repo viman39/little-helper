@@ -23,11 +23,15 @@ export const questionsFooter = css`
   margin-left: 10vw;
   font-size: 16px;
 
-  span:nth-child(2) {
-    margin-left: 10vw;
+  button:nth-child(2) {
+    margin-left: 1vw;
   }
 
   span:nth-child(3) {
+    margin-left: 10vw;
+  }
+
+  span:nth-child(4) {
     margin-left: 3vw;
   }
 `;
