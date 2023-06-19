@@ -7,7 +7,9 @@ export function* getRandomQuestion(questions) {
       yield {
         ...question,
         answers: shuffleArray(
-          question.answers.filter((answer) => answer.isCorrect !== null)
+          question.answers
+            .filter((answer) => answer.isCorrect !== null)
+            .map((answer) => ({ ...answer, isSelected: false }))
         ),
       };
     }

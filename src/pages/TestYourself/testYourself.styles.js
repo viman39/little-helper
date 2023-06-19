@@ -21,4 +21,13 @@ export const answerDescription = css`
 export const questionsFooter = css`
   margin-top: 4vh;
   margin-left: 10vw;
+  font-size: 16px;
+
+  span:nth-child(2) {
+    margin-left: 10vw;
+  }
+
+  span:nth-child(3) {
+    margin-left: 3vw;
+  }
 `;

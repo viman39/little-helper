@@ -20,7 +20,12 @@ const TestYourself = () => {
   return (
     <>
       {loading && <div>loading</div>}
-      {!loading && <Questions randomQuestion={randomQuestion} />}
+      {!loading && (
+        <Questions
+          randomQuestion={randomQuestion}
+          questionsCount={exam.questions.length}
+        />
+      )}
     </>
   );
 };
