@@ -12,5 +12,6 @@ export const tooltipStyles = css`
   padding: 5px;
   border-radius: 6px;
   position: absolute;
+  width: 200px;
   z-index: 1;
 `;

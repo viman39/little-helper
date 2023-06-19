@@ -7,6 +7,7 @@ import {
   questionsFooter,
 } from "./testYourself.styles";
 import AnsweredQuestion from "./AnsweredQuestion";
+import Tooltip from "../../components/Tooltip/Tooltip";
 
 const Questions = ({ randomQuestion, questionsCount }) => {
   const [question, setQuestion] = useState(randomQuestion.next().value);
@@ -22,6 +23,7 @@ const Questions = ({ randomQuestion, questionsCount }) => {
     correctAnswered === 0
       ? 0
       : parseInt((correctAnswered * 100) / totalAnswered);
+
   const percentageColor =
     percentageCorrect === 0
       ? "black"
@@ -68,39 +70,46 @@ const Questions = ({ randomQuestion, questionsCount }) => {
     <div className={questionsView}>
       <div className={questionDescription}>{question?.description}</div>
       <div className={answerDescription}>
-        {answers.map((answer, index) => (
-          <div
-            key={index}
-            onClick={() => {
-              checkAnswerHandler(index);
-            }}
-          >
-            <input
-              type="checkbox"
-              checked={answer.isSelected !== undefined && answer.isSelected}
-              onChange={() => {}}
-            />
-            <>
-              <span
-                style={{
-                  color: showAnswers
-                    ? answer.isCorrect
-                      ? "green"
-                      : "red"
-                    : "black",
-                }}
-              >
-                {answer.description}
-              </span>
-              {showAnswers && (
-                <>
-                  {answer?.notes &&
-                    answer?.notes.map((note) => <div>{note}</div>)}
-                </>
-              )}
-            </>
+        {answers.length > 0 ? (
+          answers.map((answer, index) => (
+            <div
+              key={index}
+              onClick={() => {
+                checkAnswerHandler(index);
+              }}
+            >
+              <input
+                type="checkbox"
+                checked={answer.isSelected !== undefined && answer.isSelected}
+                onChange={() => {}}
+              />
+              <>
+                <span
+                  style={{
+                    color: showAnswers
+                      ? answer.isCorrect
+                        ? "green"
+                        : "red"
+                      : "black",
+                  }}
+                >
+                  {answer.description}
+                </span>
+                {showAnswers && (
+                  <>
+                    {answer?.notes &&
+                      answer?.notes.map((note) => <div>{note}</div>)}
+                  </>
+                )}
+              </>
+            </div>
+          ))
+        ) : (
+          <div>
+            Nu sunt raspunsuri inregistrate pentru intrebarea asta. Sunt afisate
+            doar raspunsurile inregistrate.
           </div>
-        ))}
+        )}
       </div>
       <div className={questionsFooter}>
         {!showAnswers && (
@@ -124,9 +133,11 @@ const Questions = ({ randomQuestion, questionsCount }) => {
             : "Vezi intrebari raspunse"}
         </Button>
         <span>{`${questionsCounter}/${questionsCount}`}</span>
-        <span
-          style={{ color: percentageColor, fontWeight: "bold" }}
-        >{`${percentageCorrect}%`}</span>
+        <Tooltip text="Procentajul este calculat in functie de cate raspunsuri corecte ai dat. Un raspuns este considerat corect daca este marcat cu rosu si nu l-ai checkuit sau este marcat cu verde si l-ai checkuit">
+          <span
+            style={{ color: percentageColor, fontWeight: "bold" }}
+          >{`${percentageCorrect}%`}</span>
+        </Tooltip>
       </div>
       {showAnsweredQuestions && (
         <div>

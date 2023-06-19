@@ -31,7 +31,7 @@ export const questionsFooter = css`
     margin-left: 10vw;
   }
 
-  span:nth-child(4) {
+  div > span:nth-child(1) {
     margin-left: 3vw;
   }
 `;

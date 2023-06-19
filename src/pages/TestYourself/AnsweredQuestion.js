@@ -4,10 +4,12 @@ const AnsweredQuestion = ({ question, index }) => {
   const [showAnswers, setShowAnswers] = useState(false);
 
   return (
-    <div>
-      <div key={index} onClick={() => setShowAnswers((old) => !old)}>{`${
-        index + 1
-      }. ${question.description}`}</div>
+    <>
+      <div
+        key={index}
+        onClick={() => setShowAnswers((old) => !old)}
+        style={{ cursor: "pointer" }}
+      >{`${index + 1}. ${question.description}`}</div>
       {showAnswers && (
         <div style={{ marginBottom: "7px" }}>
           {question.answers.map((answer) => (
@@ -27,7 +29,7 @@ const AnsweredQuestion = ({ question, index }) => {
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 };
 
