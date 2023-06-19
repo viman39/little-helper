@@ -8,6 +8,7 @@ import {
 } from "./testYourself.styles";
 import AnsweredQuestion from "./AnsweredQuestion";
 import Tooltip from "../../components/Tooltip/Tooltip";
+import Confetti from "../../components/Confetti";
 
 const Questions = ({ randomQuestion, questionsCount }) => {
   const [question, setQuestion] = useState(randomQuestion.next().value);
@@ -18,6 +19,7 @@ const Questions = ({ randomQuestion, questionsCount }) => {
   const [totalAnswered, setTotalAnswered] = useState(0);
   const [answeredQuestions, setAnsweredQuestions] = useState([]);
   const [showAnsweredQuestions, setShowAnsweredQuestions] = useState(false);
+  const [displayConffeti, setDisplayConffeti] = useState(false);
 
   const percentageCorrect =
     correctAnswered === 0
@@ -43,8 +45,18 @@ const Questions = ({ randomQuestion, questionsCount }) => {
     });
   };
 
-  const testYourselfHandler = () => {
+  const showAnswersHandler = () => {
+    const correctAnswers = answers.filter(
+      (answer) => answer.isSelected === answer.isCorrect
+    ).length;
+
+    setDisplayConffeti(correctAnswers === answers.length);
+    setShowAnswers(true);
+  };
+
+  const nextQuestionHandler = () => {
     setShowAnswers(false);
+    setDisplayConffeti(false);
 
     const currentCorrectAnswered = answers.filter(
       (answer) => answer.isSelected === answer.isCorrect
@@ -68,6 +80,7 @@ const Questions = ({ randomQuestion, questionsCount }) => {
 
   return (
     <div className={questionsView}>
+      {displayConffeti && <Confetti />}
       <div className={questionDescription}>{question?.description}</div>
       <div className={answerDescription}>
         {answers.length > 0 ? (
@@ -113,17 +126,12 @@ const Questions = ({ randomQuestion, questionsCount }) => {
       </div>
       <div className={questionsFooter}>
         {!showAnswers && (
-          <Button
-            fontSize="16px"
-            onClick={() => {
-              setShowAnswers(true);
-            }}
-          >
+          <Button fontSize="16px" onClick={showAnswersHandler}>
             Verifica
           </Button>
         )}
         {showAnswers && (
-          <Button fontSize="16px" onClick={testYourselfHandler}>
+          <Button fontSize="16px" onClick={nextQuestionHandler}>
             Next
           </Button>
         )}
