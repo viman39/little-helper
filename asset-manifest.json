@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.js": "/little-helper/static/js/main.4e43fe1b.js",
+    "main.js": "/little-helper/static/js/main.c9756369.js",
     "index.html": "/little-helper/index.html",
-    "main.4e43fe1b.js.map": "/little-helper/static/js/main.4e43fe1b.js.map"
+    "main.c9756369.js.map": "/little-helper/static/js/main.c9756369.js.map"
   },
   "entrypoints": [
-    "static/js/main.4e43fe1b.js"
+    "static/js/main.c9756369.js"
   ]
 }
